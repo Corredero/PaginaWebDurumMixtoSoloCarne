@@ -2,12 +2,13 @@ import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SongService, Song } from '../../services/song.service';
+import { PrimeraMayusculaPipe } from '../../pipes/primera-mayuscula-pipe';
 
 
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PrimeraMayusculaPipe],
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.css'
 })

@@ -38,8 +38,8 @@
           @for (song of filteredSongs(); track song.id; let i = $index) {
             <tr>
               <td class="num-cell">{{ i + 1 }}</td>
-              <td><b>{{ song.title }}</b></td>
-              <td class="artist-cell">{{ song.artist }}</td>
+              <td><b>{{ song.title | primeraMayuscula }}</b></td>
+              <td class="artist-cell">{{ song.artist | primeraMayuscula }}</td>
               <td>
                 <button class="btn btn-red" (click)="delete(song.id)">Borrar</button>
               </td>
