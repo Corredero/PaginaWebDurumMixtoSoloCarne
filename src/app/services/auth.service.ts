@@ -10,19 +10,19 @@ export class AuthService {
   private readonly USERS_KEY = 'y2k_users';
   private readonly CURRENT_USER_KEY = 'y2k_current_user';
 
-  // Signals para manejar el estado de forma reactiva
   users = signal<User[]>(this.loadUsers());
   currentUser = signal<User | null>(this.loadCurrentUser());
   isAuthenticated = computed(() => !!this.currentUser());
 
-  // Verificamos si estamos en el navegador para usar LocalStorage
   private get storageAvailable(): boolean {
     return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
 
-  // 1. CARGAR USUARIOS AL INICIAR
   private loadUsers(): User[] {
-    if (!this.storageAvailable) return [];
+    if (!this.storageAvailable) {
+      return [];
+    }
+
     try {
       return JSON.parse(localStorage.getItem(this.USERS_KEY) || '[]');
     } catch {
@@ -30,74 +30,84 @@ export class AuthService {
     }
   }
 
-  // 2. CARGAR SESIÓN ACTIVA AL INICIAR (Para que no se borre al dar F5)
   private loadCurrentUser(): User | null {
-    if (!this.storageAvailable) return null;
-    const username = localStorage.getItem(this.CURRENT_USER_KEY);
-    if (!username) return null;
+    if (!this.storageAvailable) {
+      return null;
+    }
 
-    // Buscamos al usuario en la lista para tener sus datos completos
+    const username = localStorage.getItem(this.CURRENT_USER_KEY);
+    if (!username) {
+      return null;
+    }
+
     return this.loadUsers().find(user => user.username === username) || null;
   }
 
-  // 3. GUARDAR LISTA DE USUARIOS
   private saveUsers() {
-    if (this.storageAvailable) {
-      localStorage.setItem(this.USERS_KEY, JSON.stringify(this.users()));
+    if (!this.storageAvailable) {
+      return;
     }
+
+    localStorage.setItem(this.USERS_KEY, JSON.stringify(this.users()));
   }
 
-  // 4. GUARDAR SESIÓN ACTUAL (Esta es la que pedías)
   private saveCurrentUser() {
-    if (!this.storageAvailable) return;
-    
+    if (!this.storageAvailable) {
+      return;
+    }
+
     if (this.currentUser()) {
-      // Guardamos el nombre del usuario logueado
       localStorage.setItem(this.CURRENT_USER_KEY, this.currentUser()!.username);
     } else {
       localStorage.removeItem(this.CURRENT_USER_KEY);
     }
   }
 
-  // FUNCIÓN PARA REGISTRARSE
   register(username: string, password: string, confirmPassword: string) {
     const normalized = username.trim().toLowerCase();
-    
-    if (!normalized || !password.trim() || password !== confirmPassword) {
-      return { success: false, message: 'Datos incorrectos o contraseñas no coinciden.' };
+    if (!normalized || !password.trim() || !confirmPassword.trim()) {
+      return { success: false, message: 'Rellena todos los campos.' };
+    }
+
+    if (password !== confirmPassword) {
+      return { success: false, message: 'Las contraseñas no coinciden.' };
     }
 
     const exists = this.users().some(user => user.username === normalized);
-    if (exists) return { success: false, message: 'El usuario ya existe.' };
+    if (exists) {
+      return { success: false, message: 'El nombre de usuario ya existe.' };
+    }
 
     const newUser: User = { username: normalized, password: password.trim() };
-    
-    // Actualizamos la lista y el usuario actual
     this.users.update(list => [...list, newUser]);
-    this.saveUsers(); // <--- Guarda en disco
-    
+    this.saveUsers();
     this.currentUser.set(newUser);
-    this.saveCurrentUser(); // <--- Guarda la sesión
+    this.saveCurrentUser();
 
-    return { success: true, message: '¡Cuenta creada con éxito!' };
+    return { success: true, message: 'Usuario registrado y autenticado.' };
   }
 
-  // FUNCIÓN PARA LOGIN
   login(username: string, password: string) {
     const normalized = username.trim().toLowerCase();
-    const user = this.users().find(u => u.username === normalized && u.password === password.trim());
+    if (!normalized || !password.trim()) {
+      return { success: false, message: 'Rellena todos los campos.' };
+    }
 
-    if (!user) return { success: false, message: 'Usuario o contraseña incorrectos.' };
+    const user = this.users().find(
+      user => user.username === normalized && user.password === password.trim()
+    );
+
+    if (!user) {
+      return { success: false, message: 'Usuario o contraseña incorrectos.' };
+    }
 
     this.currentUser.set(user);
-    this.saveCurrentUser(); // <--- Guarda la sesión para que no se borre al cerrar
-    
-    return { success: true, message: 'Bienvenido de nuevo.' };
+    this.saveCurrentUser();
+    return { success: true, message: 'Has iniciado sesión correctamente.' };
   }
 
-  // FUNCIÓN PARA CERRAR SESIÓN
   logout() {
     this.currentUser.set(null);
-    this.saveCurrentUser(); // <--- Borra la sesión del disco
+    this.saveCurrentUser();
   }
 }
