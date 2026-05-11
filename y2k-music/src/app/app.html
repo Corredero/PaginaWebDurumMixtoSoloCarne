@@ -2,11 +2,12 @@
   <app-header />
 
   <div class="layout">
-    <app-sidebar />
+    <app-sidebar [currentView]="currentView()" (viewChange)="currentView.set($event)" />
 
     <div class="main-col">
-      <app-song-form />
-      <app-song-list />
+      <app-song-form *ngIf="currentView() === 'songs'" />
+      <app-song-list *ngIf="currentView() === 'songs'" />
+      <app-top-artists *ngIf="currentView() === 'top10'" />
     </div>
   </div>
 

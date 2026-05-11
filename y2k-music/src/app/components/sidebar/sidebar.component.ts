@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SongService } from '../../services/song.service';
 import { MenuComponent } from '../menu/menu';
@@ -14,5 +14,12 @@ import { AdComponent } from '../ad/ad';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+  @Input() currentView: 'songs' | 'top10' = 'songs';
+  @Output() viewChange = new EventEmitter<'songs' | 'top10'>();
+
   constructor(public songService: SongService) {}
+
+  onViewChange(view: 'songs' | 'top10') {
+    this.viewChange.emit(view);
+  }
 }
