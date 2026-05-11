@@ -1,6 +1,6 @@
 <div class="status-bar">
   <span class="status-segment">Zona horaria: Europa/Madrid</span>
-  <span class="status-segment">{{ songService.songs().length }} canciones guardadas</span>
+  <span class="status-segment">{{ songService.songs().length }} {{ songService.songs().length === 1 ? 'canción guardada' : 'canciones guardadas' }} </span>
   <span class="status-segment">Internet Explorer 6.0</span>
   <span>Pagina lista</span>
 </div>

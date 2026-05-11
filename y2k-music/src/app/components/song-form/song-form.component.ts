@@ -24,6 +24,16 @@ export class SongFormComponent {
       this.showMessage('Rellena los dos campos!', 'red');
       return;
     }
+
+    const exists = this.songService.songs().some(
+    s => s.title.toLowerCase() === this.title.toLowerCase() &&
+         s.artist.toLowerCase() === this.artist.toLowerCase()
+    );
+
+    if (exists) {
+    this.showMessage('La canción ya existe', 'red');
+    return;
+    }
     this.songService.add(this.title.trim(), this.artist.trim());
     this.title = '';
     this.artist = '';
