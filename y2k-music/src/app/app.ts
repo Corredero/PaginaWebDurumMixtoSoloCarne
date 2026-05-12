@@ -8,6 +8,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { TopArtistsComponent } from './components/top-artists/top-artists.component';
 import { NovedadesComponent } from './components/novedades/novedades.component';
 import { ArtistSearchComponent } from './components/artist-search/artist-search.component';
+import { ChatComponent } from './components/chat/chat.component';
 import { JuegoComponent } from './components/juego/juego.component';
 import { AuthService } from './services/auth.service';
 
@@ -24,17 +25,18 @@ import { AuthService } from './services/auth.service';
     TopArtistsComponent,
     NovedadesComponent,
     ArtistSearchComponent,
+    ChatComponent,
     JuegoComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  currentView = signal<'songs' | 'top10' | 'artist' | 'novedades' | 'juego'>('songs');
+  currentView = signal<'songs' | 'top10' | 'artist' | 'chat' | 'novedades' | 'juego'>('songs');
 
   constructor(public authService: AuthService) {}
 
-  onViewChange(view: 'songs' | 'top10' | 'artist' | 'novedades' | 'juego') {
+  onViewChange(view: 'songs' | 'top10' | 'artist' | 'chat' | 'novedades' | 'juego') {
     this.currentView.set(view);
   }
 }

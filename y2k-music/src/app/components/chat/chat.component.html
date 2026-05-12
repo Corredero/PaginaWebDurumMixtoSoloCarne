@@ -1,0 +1,20 @@
+<div class="chat-container">
+  <div class="box">
+    <div class="box-title">Retro Chat 2000</div>
+    <div class="box-body">
+      <div *ngFor="let mensaje of mensajes(); let i = index" class="mensaje usuario">
+        <p>{{ mensaje.texto }}</p>
+        <span class="fecha">{{ mensaje.fecha }}</span>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input
+        type="text"
+        [(ngModel)]="mensaje"
+        (keydown.enter)="publicar()"
+        placeholder="Escribe un mensaje..."
+      />
+      <button (click)="publicar()">Publicar</button>
+    </div>
+  </div>
+</div>
