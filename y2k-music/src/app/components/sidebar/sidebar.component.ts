@@ -14,11 +14,11 @@ import { AdComponent } from '../ad/ad';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
-  @Output() viewChange = new EventEmitter<'songs' | 'top10' | 'novedades' | 'juego'>();
+  @Output() viewChange = new EventEmitter<'songs' | 'top10' | 'artist' | 'novedades' | 'juego'>();
 
   constructor(public songService: SongService) {}
 
-  onViewChange(view: 'songs' | 'top10' | 'novedades' | 'juego') {
+  onViewChange(view: 'songs' | 'top10' | 'artist' | 'novedades' | 'juego') {
     this.viewChange.emit(view);
   }
 }

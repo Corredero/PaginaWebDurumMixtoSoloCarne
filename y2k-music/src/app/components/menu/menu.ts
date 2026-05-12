@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './menu.css',
 })
 export class MenuComponent {
-  @Output() viewChange = new EventEmitter<'songs' | 'top10' | 'novedades' | 'juego'>();
+  @Output() viewChange = new EventEmitter<'songs' | 'top10' | 'artist' | 'novedades' | 'juego'>();
 
   showSongs() {
     this.viewChange.emit('songs');
@@ -17,6 +17,10 @@ export class MenuComponent {
 
   showTop10() {
     this.viewChange.emit('top10');
+  }
+
+  showArtist() {
+    this.viewChange.emit('artist');
   }
 
   showNovedades() {
