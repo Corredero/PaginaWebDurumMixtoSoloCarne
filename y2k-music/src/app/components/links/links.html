@@ -9,5 +9,47 @@
       rel="noopener noreferrer"
       >{{ link.label }}</a
     >
+    <button class="nav-link small subscribe-button" (click)="openPopup()">
+      Suscribirme
+    </button>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="showPopup()">
+  <div class="popup">
+    <h2>Formulario de suscripción</h2>
+    <p>Recibe novedades y lanzamientos exclusivos de la web retro.</p>
+    <form (ngSubmit)="submitForm()">
+      <input
+        type="text"
+        placeholder="Nombre"
+        [(ngModel)]="nombre"
+        name="nombre"
+      />
+      <div class="error" *ngIf="errors().nombre">{{ errors().nombre }}</div>
+
+      <input
+        type="text"
+        placeholder="Apellidos"
+        [(ngModel)]="apellidos"
+        name="apellidos"
+      />
+      <div class="error" *ngIf="errors().apellidos">{{ errors().apellidos }}</div>
+
+      <input
+        type="email"
+        placeholder="Correo electrónico"
+        [(ngModel)]="email"
+        name="email"
+      />
+      <div class="error" *ngIf="errors().email">{{ errors().email }}</div>
+
+      <button type="submit">Enviar</button>
+      <button type="button" class="cerrar" (click)="closePopup()">
+        Cerrar
+      </button>
+    </form>
+
+    <div class="success" *ngIf="successMessage()">{{ successMessage() }}</div>
   </div>
 </div>

@@ -15,5 +15,37 @@
     </div>
   </div>
 
+  <div class="overlay" *ngIf="showSubscriptionPopup()">
+    <div class="popup-card">
+      <button class="popup-close" type="button" (click)="closeSubscriptionPopup()">×</button>
+      <h2>Inscribete si quieres recibir anuncios y novedades.</h2>
+      <p class="popup-copy">Recibe novedades sobre álbumes, lanzamientos y noticias retro directamente en tu correo.</p>
+
+      <form (ngSubmit)="submitSubscription()" class="popup-form" novalidate>
+        <label>
+          Nombre
+          <input type="text" [(ngModel)]="subscriptionName" name="subscriptionName" placeholder="Nombre" />
+          <span class="error" *ngIf="subscriptionErrors().nombre">{{ subscriptionErrors().nombre }}</span>
+        </label>
+
+        <label>
+          Apellidos
+          <input type="text" [(ngModel)]="subscriptionLastName" name="subscriptionLastName" placeholder="Apellidos" />
+          <span class="error" *ngIf="subscriptionErrors().apellidos">{{ subscriptionErrors().apellidos }}</span>
+        </label>
+
+        <label>
+          Correo electrónico
+          <input type="email" [(ngModel)]="subscriptionEmail" name="subscriptionEmail" placeholder="correo@ejemplo.com" />
+          <span class="error" *ngIf="subscriptionErrors().email">{{ subscriptionErrors().email }}</span>
+        </label>
+
+        <button class="popup-submit" type="submit">Enviar</button>
+      </form>
+
+      <div class="popup-message" *ngIf="subscriptionMessage()">{{ subscriptionMessage() }}</div>
+    </div>
+  </div>
+
   <app-footer />
 </div>

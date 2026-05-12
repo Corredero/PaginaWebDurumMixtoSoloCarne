@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 interface Mensaje {
   texto: string;
@@ -24,6 +25,10 @@ export class ChatComponent {
     }
   ]);
 
+  constructor(private authService: AuthService) {}
+
+  isAuthenticated = computed(() => this.authService.isAuthenticated());
+
   obtenerFecha(): string {
     const ahora = new Date();
     return ahora.toLocaleString('es-ES', {
@@ -36,6 +41,10 @@ export class ChatComponent {
   }
 
   publicar(): void {
+    if (!this.isAuthenticated()) {
+      return;
+    }
+
     const texto = this.mensaje().trim();
     if (!texto) {
       return;

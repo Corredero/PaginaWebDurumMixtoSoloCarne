@@ -12,9 +12,10 @@
         type="text"
         [(ngModel)]="mensaje"
         (keydown.enter)="publicar()"
-        placeholder="Escribe un mensaje..."
+        [placeholder]="isAuthenticated() ? 'Escribe un mensaje...' : 'Inicia sesión para chatear'"
+        [disabled]="!isAuthenticated()"
       />
-      <button (click)="publicar()">Publicar</button>
+      <button (click)="publicar()" [disabled]="!isAuthenticated()">Publicar</button>
     </div>
   </div>
 </div>
